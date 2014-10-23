@@ -1,3 +1,5 @@
+package SpaceWar;
+
 import java.awt.*;
 
 public class PowerUp {

@@ -1,9 +1,12 @@
+package SpaceWar;
+
 import java.awt.*;
 
 public class Bullet {
 	private double x, y, rad, speed, dx, dy;
 	private int r;
 	private Color color;
+	private int test;
 
 	public Bullet (double angle, int x, int y) {
 		this.x = x;

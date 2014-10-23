@@ -1,0 +1,89 @@
+<project name="SpaceWar" basedir="." default="main">
+
+    <!-- Global Properties -->
+    <property name="src.dir"     value="src"/>
+    <property name="test.dir"    value="test"/>
+    <property name="build.dir"   value="build"/>
+    <property name="classes.dir" value="${build.dir}/main/classes"/>
+    <property name="jar.dir"     value="${build.dir}/main/jar"/>
+    <property name="main-class"  value="SpaceWar.SpaceWar"/>
+    <property name="classes_test.dir"	 value="${build.dir}/test/classes"/>
+    <property name="jar_test.dir"        value="${build.dir}/test/jar"/>
+	<property name="test_output.dir" value="${build.dir}/test/output"/>
+
+	<!-- Class Paths -->
+    <path id="junit.class.path">
+        <pathelement location="lib/junit.jar"></pathelement>
+    </path>
+	<path id="spacewar.class.path">
+        <pathelement location="build/main/jar/SpaceWar.jar"></pathelement>
+    </path>
+    <path id="randoop.class.path">
+        <pathelement location="build/test/jar/SpaceWar_Test.jar"></pathelement>
+    </path>
+    
+    <!-- Build Targets -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="true"/>
+        <copy todir="${classes.dir}">
+    		<fileset dir="src"
+             	includes="**/*" />
+		</copy>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${jar.dir}"/>
+        <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="maketest" depends="jar">
+                <mkdir dir="${classes_test.dir}"/>
+        		<javac srcdir="${test.dir}" destdir="${classes_test.dir}" includeantruntime="true">
+		    <classpath refid="junit.class.path" />
+		    <classpath refid="spacewar.class.path" />
+		    </javac>
+    </target>
+
+    <target name="runtest_jar" depends="maketest">
+        <mkdir dir="${jar_test.dir}"/>
+        <jar destfile="${jar_test.dir}/${ant.project.name}_Test.jar" basedir="${classes_test.dir}">
+            <manifest>
+                <attribute name="Main-Class-Test" value="${test_class}"/>
+            </manifest>
+        </jar>
+    </target>
+    
+    <target name="run" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>  
+    </target>
+    
+	<!-- JUnit -->
+	<target name="runtest" depends="runtest_jar">
+	    <mkdir dir="${test_output.dir}"/>
+	    <junit printsummary="on" fork="true" haltonfailure="no">
+	      <classpath refid="junit.class.path" />
+	      <classpath refid="randoop.class.path" />
+	      <classpath refid="spacewar.class.path" />
+	      <formatter type="xml" />
+	      <batchtest todir="${test_output.dir}">
+	        <fileset dir="test/">
+	          <include name="**/*Test*.java" />
+	        </fileset>
+	      </batchtest>
+	    </junit>
+	  </target>
+	 
+	<!-- ANT Commands -->
+    <target name="clean-build" depends="clean,jar"/>
+    <target name="main" depends="clean,runtest"/>
+
+</project>

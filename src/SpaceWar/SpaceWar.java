@@ -3,6 +3,8 @@
 
 		Image sprites: http://sm.ingenieriamultimedia.org/lib/exe/fetch.php?media=alumnos:grupo_13:naves.png
 */
+package SpaceWar;
+
 import javax.swing.JFrame;
 
 public class SpaceWar {
