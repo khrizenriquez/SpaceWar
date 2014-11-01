@@ -1,7 +1,8 @@
 /*
-		Author: Khriz Enríquez	@khrizenriquez
-
-		Image sprites: http://sm.ingenieriamultimedia.org/lib/exe/fetch.php?media=alumnos:grupo_13:naves.png
+		Author: 		Khriz Enríquez	@khrizenriquez
+		
+		version: 		0.0.2
+		Image sprites: 	http://www.tenvinilo.com/img/vinilo/png/sticker%20infantil%20set%20de%20ovnis.png
 */
 import javax.swing.JFrame;
 
@@ -16,8 +17,8 @@ public class SpaceWar {
 		container.setUndecorated(true);
 
 		container.setResizable(false);
-		container.setLocationRelativeTo(null);
 		container.pack();
+		container.setLocationRelativeTo(null);
 		container.setVisible(true);
 	}
 }
