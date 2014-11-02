@@ -5,7 +5,7 @@ import javax.imageio.*;
 
 public class Player extends Generals {
 	private boolean left, right, up, down, firing, recovering;
-	private BufferedImage imageUp, imageUpTrans /*,imageLeft, imageRigth, imageDown*/, image;
+	private BufferedImage imageUp, image;
 	private Color color1, color2;
 	private int requiredPower[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	private int x, y, r, dx, dy, speed, lives, score, powerLevel, power;
@@ -34,10 +34,6 @@ public class Player extends Generals {
 		score = 0;
 
 		if (imageUp == null) imageUp = loadImg ("/img/hero/hero-up.png");
-		if (imageUpTrans == null) imageUpTrans = loadImg ("/img/hero/hero-up-transp.png");
-		//if (imageDown == null) imageDown = loadImg ("/img/hero/hero-down.png");
-		//if (imageRigth == null) imageRigth = loadImg ("/img/hero/hero-right.png");
-		//if (imageLeft == null) imageLeft = loadImg ("/img/hero/hero-left.png");
 		image = imageUp;
 	}
 
@@ -51,7 +47,7 @@ public class Player extends Generals {
 		x += dx;
 		y += dy;
 
-		//		setting the frame border
+		//		setting the frame limit
 		if (x < r) x = r;
 		if (y < r) y = r;
 		if (x > SpacePanel.width - r) x = SpacePanel.width - r;
@@ -95,28 +91,8 @@ public class Player extends Generals {
 		}
 	}
 	public void draw (Graphics2D g) {
-		if (recovering) {
-			image = imageUpTrans;
-			g.drawImage(image, x - r, y - r, null);
-			/*g.setColor(color2);
-			g.fillOval(x - r, y - r, 2 * r, 2 * r);
-
-			g.setStroke(new BasicStroke(3));
-			g.setColor(color2.darker());
-			g.drawOval(x - r, y - r, 2 * r, 2 * r);
-			g.setStroke(new BasicStroke(1));*/
-		} else {
-			//		This is the player
-			image = imageUp;
-			g.drawImage(image, x - r, y - r, null);
-			/*g.setColor(color1);
-			g.fillOval(x - r, y - r, 2 * r, 2 * r);
-
-			g.setStroke(new BasicStroke(3));
-			g.setColor(color1.darker());
-			g.drawOval(x - r, y - r, 2 * r, 2 * r);
-			g.setStroke(new BasicStroke(1));*/
-		}
+		image = imageUp;
+		g.drawImage(image, x - r, y - r, null);
 	}
 
 	//		Setters

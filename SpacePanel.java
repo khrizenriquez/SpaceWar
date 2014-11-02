@@ -1,17 +1,17 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 import javax.swing.*;
-import javax.imageio.*;
 
 public class SpacePanel extends JPanel implements Runnable, KeyListener {
 	public final static int width = 800;
 	public final static int height = 600;
 
-	private boolean running, waveStart;
-	private BufferedImage image, lifeImg;
+	private boolean running, waveStart, keyControl = false;
+	private BufferedImage image, imgPlayer, background;
 	private double averageFps;
 	private Graphics2D g;
 	private int fps = 30, waveDelay = 2000, limitLevel = 12;
@@ -25,6 +25,12 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 	public static ArrayList <PowerUp> powerUps;
 	public static ArrayList <Explosion> explosions;
 	public static ArrayList <Text> texts;
+
+	private File flFile = null;
+	private FileReader frRead = null;
+	private BufferedReader brRead = null;
+	private PrintWriter outputFile;
+	private String scoreFile = "score.txt";
 
 	public SpacePanel () {
 		super();
@@ -44,28 +50,17 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 		addKeyListener(this);
 	}
 
-	//		Loading image
-	public BufferedImage loadImg (String urlName) {
-		try {
-			URL url = getClass().getResource(urlName);
-			BufferedImage img = ImageIO.read(url);
-			System.out.println(getClass().getResource(urlName));
-			return img;
-		} catch (Exception e) {
-			System.out.println("Error " + e.getMessage());
-			return null;
-		}
-	}
-
 	//		Runnable methods
 	public void run () {
 		running = true;
 
-		if (lifeImg == null) lifeImg = loadImg ("/img/hero/hero-up-transp.png");
+		if (imgPlayer == null) imgPlayer = new Generals().loadImg("/img/hero/hero-up-transp.png");
+
 		image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		g = (Graphics2D) image.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		if (background == null) background = new Generals().loadImg ("/img/stage/space-desktop.png");
 
 		player = new Player();
 		bullets = new ArrayList<Bullet>();
@@ -116,11 +111,38 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 		g.fillRect(0, 0, width, height);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Century Gothic", Font.PLAIN, 20));
+
 		String s = "Game over";
 		int length = (int) g.getFontMetrics().getStringBounds(s, g).getWidth();
-		g.drawString(s, (width - length) / 2, height / 2);
+		g.drawString(s, (width - length) / 3, height / 3);
+
 		String score = "Total score: " + player.getScore();
-		g.drawString(score, (width - length) / 2, height / 2 + 50);
+		g.drawString(score, (width - length) / 3, height / 3 + 50);
+
+		String maxScore = "";
+
+		//		File contents:	level(blank space)score
+		String arr[] = readScoreFile(scoreFile).split(" ");
+		try {
+			if (player.getScore() > Integer.parseInt(arr[1])) {
+				//		Write the 'score' file with the new scores
+				writeFile(scoreFile, waveNumber + " " + player.getScore());
+
+				maxScore = "Best record \nLevel: " + waveNumber + " | Score: " + player.getScore();
+				String congrats = "Congratulations! :D, new best score";
+				g.drawString(congrats.toUpperCase(), (width - length) / 3, height / 3 + 200);
+			} else {
+				maxScore = "Best record Level: " + arr[0] + " | Score: " + arr[1];
+			}
+		}
+		catch (Exception e) {
+			System.out.println("Issue");
+		}
+		g.drawString(maxScore, (width - length) / 3, height / 3 + 100);
+
+		//		Credits message
+		g.drawString("@khrizenriquez", (width - length) / 2 + 270, (height - length) / 2 + 340);
+
 		gameDraw();
 	}
 
@@ -145,6 +167,42 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 				enemies.add(new Enemy(3, 1));
 			for (int i = 0; i < 2; i++) 
 				enemies.add(new Enemy(3, (waveNumber - 8)));
+		}
+		if (waveNumber >= 13 && waveNumber <= 16) {
+			for (int i = 0; i < 7; i++) 
+				enemies.add(new Enemy(4, 1));
+			for (int i = 0; i < 2; i++) 
+				enemies.add(new Enemy(4, (waveNumber - 8)));
+		}
+		if (waveNumber >= 17 && waveNumber <= 20) {
+			for (int i = 0; i < 7; i++) 
+				enemies.add(new Enemy(5, 1));
+			for (int i = 0; i < 2; i++) 
+				enemies.add(new Enemy(5, (waveNumber - 8)));
+		}
+		if (waveNumber >= 21 && waveNumber <= 24) {
+			for (int i = 0; i < 7; i++) 
+				enemies.add(new Enemy(6, 1));
+			for (int i = 0; i < 2; i++) 
+				enemies.add(new Enemy(6, (waveNumber - 8)));
+		}
+		if (waveNumber >= 25 && waveNumber <= 28) {
+			for (int i = 0; i < 7; i++) 
+				enemies.add(new Enemy(7, 1));
+			for (int i = 0; i < 2; i++) 
+				enemies.add(new Enemy(7, (waveNumber - 8)));
+		}
+		if (waveNumber >= 29 && waveNumber <= 32) {
+			for (int i = 0; i < 7; i++) 
+				enemies.add(new Enemy(8, 1));
+			for (int i = 0; i < 2; i++) 
+				enemies.add(new Enemy(8, (waveNumber - 8)));
+		}
+		if (waveNumber >= 33 && waveNumber <= 36) {
+			for (int i = 0; i < 7; i++) 
+				enemies.add(new Enemy(9, 1));
+			for (int i = 0; i < 2; i++) 
+				enemies.add(new Enemy(9, (waveNumber - 8)));
 		} else
 		if (waveNumber > limitLevel)
 			running = false;
@@ -168,7 +226,7 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 		//		The badass enemies
 		if (waveStart && enemies.size() == 0) 
 			createNewEnemies();
-		
+
 		player.update();
 
 		//		----------------Removing elements
@@ -309,7 +367,7 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 				}
 				if (type == 3) {
 					player.increasePower(2);
-					texts.add(new Text(player.getX(), player.getY(), 2000, "Power +2"));
+					texts.add(new Text(player.getX(), player.getY(), 2000, "Power +2, you drink a Monster Energy"));
 				}
 
 				powerUps.remove(i);
@@ -319,8 +377,10 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 	}
 	private void gameRender() {
 		//		Drawing da background of our game
-		g.setColor(new Color(0, 100, 240));
-		g.fillRect(0, 0, width, height);
+		//g.setColor(new Color(0, 100, 240));
+		//g.fillRect(0, 0, width, height);
+		g.drawImage(image, 0, 0, null);
+		g.drawImage(background, 0, 0, null);
 
 		//		Our hero
 		player.draw(g);
@@ -347,9 +407,7 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 			g.setFont(new Font("Century Gothic", Font.PLAIN, 20));
 			String s = "-Level " + waveNumber + ", good luck";
 			int length = (int) g.getFontMetrics().getStringBounds(s, g).getWidth();
-			//int alpha = (int) (255 * Math.sin(Math.PI * waveStartTimerDiff / waveDelay));
-			//if (alpha > 255) alpha = 255;
-			g.setColor(new Color(255, 255, 255, 128));
+			g.setColor(new Color(0, 0, 0, 128));
 			g.drawString(s, width / 2 - length, height / 2);
 		}
 
@@ -364,16 +422,15 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 
 		//		Player lives
 		for (int i = 0; i < player.getLives(); i++) 
-			g.drawImage(lifeImg, 25 + (35 * i), 20, 30, 30, null);
+			g.drawImage(imgPlayer, 25 + (35 * i), 20, 30, 30, null);
 
 		//		Player score
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Century Gothic", Font.PLAIN, 16));
-		g.drawString("Score: " + player.getScore(), width - 100, 30);
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Century Gothic", Font.BOLD, 16));
+		g.drawString("Score: " + player.getScore(), width - 150, 30);
 		//		Showing level number
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Century Gothic", Font.PLAIN, 14));
-		g.drawString("Level: " + waveNumber, width - 170, 30);
+		g.setFont(new Font("Century Gothic", Font.BOLD, 14));
+		g.drawString("Level: " + waveNumber, width - 250, 30);
 	}
 	private void gameDraw() {
 		Graphics g2 = this.getGraphics();
@@ -384,6 +441,15 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 	//		KeyListener methods
 	public void keyPressed (KeyEvent e) {
 		int keyCode = e.getKeyCode();
+
+		//		When R|r key is pressed I need to restart the application, not yet
+		//		Ctrl key value = 17 			R|r key value = 82
+		if (keyCode == 17) 
+			keyControl = true;
+		else
+		if (keyControl && keyCode == 82) 
+			keyControl = false;
+		//		When R|r key is pressed I need to restart the application, not yet
 
 		if (keyCode == 27) System.exit(0);
 		if (keyCode == KeyEvent.VK_LEFT) player.setLeft(true);
@@ -403,4 +469,38 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 		if (keyCode == KeyEvent.VK_Z || keyCode == 32) player.setFiring(false);
 	}
 	public void keyTyped (KeyEvent e) {}
+
+	//		Read and write methods
+	private String readScoreFile (String srcFile) {
+		String line = null;
+		try {
+			flFile = new File(srcFile);
+			frRead = new FileReader(flFile);
+			brRead = new BufferedReader(frRead);
+
+			line = brRead.readLine();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			try {
+				if (null != frRead) {
+					frRead.close();
+					return line;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return null;
+	}
+	public void writeFile (String srcFile, String content) {
+		try {
+			outputFile = new PrintWriter(new FileWriter(srcFile), true);
+			outputFile.print(content);
+			outputFile.close();
+		} catch (IOException er) {
+			System.err.println("Issue");
+		}
+	}
 }

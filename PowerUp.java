@@ -1,9 +1,13 @@
 import java.awt.*;
+import java.awt.image.*;
+import java.net.URL;
+import javax.imageio.*;
 
-public class PowerUp {
+public class PowerUp extends Generals{
 	private Color color;
 	private double x, y;
 	private int r, type;
+	private BufferedImage imgLife, imgPower2;
 
 	//	1 = +1 life
 	//	2 = +1 power
@@ -14,15 +18,15 @@ public class PowerUp {
 		this.y = y;
 
 		if (type == 1) {
-			color = Color.RED;
+			if (imgLife == null) imgLife = loadImg ("/img/features/life.png");
 			r = 3;
 		}
 		if (type == 2) {
-			color = Color.GREEN;
+			color = Color.WHITE;
 			r = 4;
 		}
 		if (type == 3) {
-			color = Color.YELLOW;
+			if (imgPower2 == null) imgPower2 = loadImg ("/img/features/mosterEnery.png");
 			r = 6;
 		}
 	}
@@ -37,17 +41,23 @@ public class PowerUp {
 	//		Render methods
 	public boolean update () {
 		y += 2;
-		if (y > SpacePanel.height + r) 
-			return true;
+		if (y > SpacePanel.height + r) return true;
 		return false;
 	}
 	public void draw (Graphics2D g) {
-		g.setColor(color);
-		g.fillRect((int) (x - r), (int) (y - r), 2 * r, 2 * r);
+		if (type == 1) {
+			g.drawImage(imgLife, (int) (x - r), (int) (y - r), null);
+		} else 
+		if (type == 3) {
+			g.drawImage(imgPower2, (int) (x - r), (int) (y - r), null);
+		} else {
+			g.setColor(color);
+			g.fillRect((int) (x - r), (int) (y - r), 2 * r, 2 * r);
 
-		g.setStroke(new BasicStroke(3));
-		g.setColor(color.darker());
-		g.drawRect((int) (x - r), (int) (y - r), 2 * r, 2 * r);
-		g.setStroke(new BasicStroke(1));
+			g.setStroke(new BasicStroke(3));
+			g.setColor(color.darker());
+			g.drawRect((int) (x - r), (int) (y - r), 2 * r, 2 * r);
+			g.setStroke(new BasicStroke(1));
+		}
 	}
 }

@@ -8,7 +8,6 @@ public class Generals {
 		try {
 			URL url = getClass().getResource(urlName);
 			BufferedImage img = ImageIO.read(url);
-			System.out.println(getClass().getResource(urlName));
 			return img;
 		} catch (Exception e) {
 			System.out.println("Error " + e.getMessage());

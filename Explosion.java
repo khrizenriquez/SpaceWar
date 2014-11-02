@@ -1,10 +1,16 @@
 import java.awt.*;
+import java.awt.image.*;
+import java.net.URL;
+import javax.imageio.*;
 
-public class Explosion {
+public class Explosion extends Generals{
 	private double x, y;
 	private int r, maxRadius;
+	private BufferedImage ex;
 
 	public Explosion (double x, double y, int r, int max) {
+		if (ex == null) ex = loadImg("/img/badass/explosion/explosionBoom.png");
+
 		this.x = x;
 		this.y = y;
 		this.r = r;
@@ -12,15 +18,11 @@ public class Explosion {
 	}
 
 	public boolean update () {
-		r++;
-		if (r >= maxRadius) 
-			return true;
+		r += 2;
+		if (r >= maxRadius) return true;
 		return false;
 	}
 	public void draw (Graphics2D g) {
-		g.setColor(new Color(255, 255, 255, 128));
-		g.setStroke(new BasicStroke(3));
-		g.drawOval((int) (x - r), (int) (y - r), 2 * r, 2 * r);
-		g.setStroke(new BasicStroke(1));
+		g.drawImage(ex, (int) (x - r), (int) (y - r), 75, 75, null);
 	}
 }

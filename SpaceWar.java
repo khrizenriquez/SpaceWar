@@ -1,7 +1,7 @@
 /*
 		Author: 		Khriz Enríquez	@khrizenriquez
 		
-		version: 		0.0.2
+		version: 		0.1.0
 		Image sprites: 	http://www.tenvinilo.com/img/vinilo/png/sticker%20infantil%20set%20de%20ovnis.png
 */
 import javax.swing.JFrame;
