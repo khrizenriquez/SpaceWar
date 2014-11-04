@@ -3,7 +3,7 @@ import java.awt.image.*;
 import java.net.URL;
 import javax.imageio.*;
 
-public class Enemy extends Generals {
+public class Enemy {
 	private boolean ready, dead, hit;
 	private Color color;
 	private BufferedImage bd1, bd2, bd3, bd4, bd5, bd6, bd7, bd8, bd9, image;
@@ -17,7 +17,7 @@ public class Enemy extends Generals {
 
 		//		BadAss types and ranks
 		if (type == 1) {
-			if (bd1 == null) bd1 = loadImg ("/img/badass/badAss_1.png");
+			if (bd1 == null) bd1 = new Generals().loadImg("/img/badass/badAss_1.png");
 			if (rank == 1) {
 				speed = 3;
 				r = 15;
@@ -41,7 +41,7 @@ public class Enemy extends Generals {
 			image = bd1;
 		}
 		if (type == 2) {
-			if (bd2 == null) bd2 = loadImg ("/img/badass/badAss_2.png");
+			if (bd2 == null) bd2 = new Generals().loadImg("/img/badass/badAss_2.png");
 			if (rank == 1) {
 				speed = 3;
 				r = 15;
@@ -65,7 +65,7 @@ public class Enemy extends Generals {
 			image = bd2;
 		}
 		if (type == 3) {
-			if (bd3 == null) bd3 = loadImg ("/img/badass/badAss_3.png");
+			if (bd3 == null) bd3 = new Generals().loadImg("/img/badass/badAss_3.png");
 			if (rank == 1) {
 				speed = 1.5;
 				r = 15;
@@ -89,7 +89,7 @@ public class Enemy extends Generals {
 			image = bd3;
 		}
 		if (type == 4) {
-			if (bd4 == null) bd4 = loadImg ("/img/badass/badAss_4.png");
+			if (bd4 == null) bd4 = new Generals().loadImg("/img/badass/badAss_4.png");
 			if (rank == 1) {
 				speed = 2;
 				r = 15;
@@ -113,7 +113,7 @@ public class Enemy extends Generals {
 			image = bd4;
 		}
 		if (type == 5) {
-			if (bd5 == null) bd5 = loadImg ("/img/badass/badAss_5.png");
+			if (bd5 == null) bd5 = new Generals().loadImg("/img/badass/badAss_5.png");
 			if (rank == 1) {
 				speed = 1.5;
 				r = 15;
@@ -137,7 +137,7 @@ public class Enemy extends Generals {
 			image = bd5;
 		}
 		if (type == 6) {
-			if (bd6 == null) bd6 = loadImg ("/img/badass/badAss_6.png");
+			if (bd6 == null) bd6 = new Generals().loadImg("/img/badass/badAss_6.png");
 			if (rank == 1) {
 				speed = 1;
 				r = 15;
@@ -161,7 +161,7 @@ public class Enemy extends Generals {
 			image = bd6;
 		}
 		if (type == 7) {
-			if (bd7 == null) bd7 = loadImg ("/img/badass/badAss_7.png");
+			if (bd7 == null) bd7 = new Generals().loadImg("/img/badass/badAss_7.png");
 			if (rank == 1) {
 				speed = 3;
 				r = 15;
@@ -185,7 +185,7 @@ public class Enemy extends Generals {
 			image = bd7;
 		}
 		if (type == 8) {
-			if (bd8 == null) bd8 = loadImg ("/img/badass/badAss_8.png");
+			if (bd8 == null) bd8 = new Generals().loadImg("/img/badass/badAss_8.png");
 			if (rank == 1) {
 				speed = 1;
 				r = 15;
@@ -209,7 +209,7 @@ public class Enemy extends Generals {
 			image = bd8;
 		}
 		if (type == 9) {
-			if (bd9 == null) bd9 = loadImg ("/img/badass/badAss_9.png");
+			if (bd9 == null) bd9 = new Generals().loadImg("/img/badass/badAss_9.png");
 			if (rank == 1) {
 				speed = 2.5;
 				r = 15;

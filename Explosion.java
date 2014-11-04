@@ -3,13 +3,13 @@ import java.awt.image.*;
 import java.net.URL;
 import javax.imageio.*;
 
-public class Explosion extends Generals{
+public class Explosion {
 	private double x, y;
 	private int r, maxRadius;
 	private BufferedImage ex;
 
 	public Explosion (double x, double y, int r, int max) {
-		if (ex == null) ex = loadImg("/img/badass/explosion/explosionBoom.png");
+		if (ex == null) ex = new Generals().loadImg("/img/badass/explosion/explosionBoom.png");
 
 		this.x = x;
 		this.y = y;

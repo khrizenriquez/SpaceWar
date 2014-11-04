@@ -3,7 +3,7 @@ import java.awt.image.*;
 import java.net.URL;
 import javax.imageio.*;
 
-public class PowerUp extends Generals{
+public class PowerUp {
 	private Color color;
 	private double x, y;
 	private int r, type;
@@ -18,7 +18,7 @@ public class PowerUp extends Generals{
 		this.y = y;
 
 		if (type == 1) {
-			if (imgLife == null) imgLife = loadImg ("/img/features/life.png");
+			if (imgLife == null) imgLife = new Generals().loadImg("/img/features/life.png");
 			r = 3;
 		}
 		if (type == 2) {
@@ -26,7 +26,7 @@ public class PowerUp extends Generals{
 			r = 4;
 		}
 		if (type == 3) {
-			if (imgPower2 == null) imgPower2 = loadImg ("/img/features/mosterEnery.png");
+			if (imgPower2 == null) imgPower2 = new Generals().loadImg("/img/features/mosterEnery.png");
 			r = 6;
 		}
 	}

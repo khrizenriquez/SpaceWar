@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 import javax.swing.*;
 
@@ -11,10 +10,10 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 	public final static int height = 600;
 
 	private boolean running, waveStart, keyControl = false;
-	private BufferedImage image, imgPlayer, background;
+	private BufferedImage image, imgPlayer, bk, background1, background2, background3, background4, background5, background6, background7, background8;
 	private double averageFps;
 	private Graphics2D g;
-	private int fps = 30, waveDelay = 2000, limitLevel = 12;
+	private int fps = 30, waveDelay = 2000, limitLevel = 36;
 	private int waveNumber;
 	private long waveStartTimer, waveStartTimerDiff;
 	private Thread thread;
@@ -60,7 +59,15 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 		g = (Graphics2D) image.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		if (background == null) background = new Generals().loadImg ("/img/stage/space-desktop.png");
+
+		if (background1 == null) background1 = new Generals().loadImg("/img/stage/stage1.jpg");
+		if (background2 == null) background2 = new Generals().loadImg("/img/stage/stage2.jpg");
+		if (background3 == null) background3 = new Generals().loadImg("/img/stage/stage3.png");
+		if (background4 == null) background4 = new Generals().loadImg("/img/stage/stage4.jpg");
+		if (background5 == null) background5 = new Generals().loadImg("/img/stage/stage5.jpg");
+		if (background6 == null) background6 = new Generals().loadImg("/img/stage/stage6.jpg");
+		if (background7 == null) background7 = new Generals().loadImg("/img/stage/stage7.jpg");
+		if (background8 == null) background8 = new Generals().loadImg("/img/stage/stage8.jpg");
 
 		player = new Player();
 		bullets = new ArrayList<Bullet>();
@@ -139,6 +146,8 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 			System.out.println("Issue");
 		}
 		g.drawString(maxScore, (width - length) / 3, height / 3 + 100);
+
+		g.drawString("PRESS Esc KEY TO EXIT", (width - length) / 3, height / 3 + 250);
 
 		//		Credits message
 		g.drawString("@khrizenriquez", (width - length) / 2 + 270, (height - length) / 2 + 340);
@@ -377,10 +386,28 @@ public class SpacePanel extends JPanel implements Runnable, KeyListener {
 	}
 	private void gameRender() {
 		//		Drawing da background of our game
-		//g.setColor(new Color(0, 100, 240));
-		//g.fillRect(0, 0, width, height);
 		g.drawImage(image, 0, 0, null);
-		g.drawImage(background, 0, 0, null);
+		
+		if (waveNumber >= 1 && waveNumber <= 4) 
+			bk = background1;
+		if (waveNumber >= 5 && waveNumber <= 8) 
+			bk = background2;
+		if (waveNumber >= 9 && waveNumber <= 12) 
+			bk = background3;
+		if (waveNumber >= 13 && waveNumber <= 16) 
+			bk = background4;
+		if (waveNumber >= 17 && waveNumber <= 20) 
+			bk = background5;
+		if (waveNumber >= 21 && waveNumber <= 24) 
+			bk = background6;
+		if (waveNumber >= 25 && waveNumber <= 28) 
+			bk = background7;
+		if (waveNumber >= 29 && waveNumber <= 32) 
+			bk = background8;
+		if (waveNumber >= 33) 
+			bk = background1;
+
+		g.drawImage(bk, 0, 0, null);
 
 		//		Our hero
 		player.draw(g);

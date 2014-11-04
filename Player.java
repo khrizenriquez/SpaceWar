@@ -3,9 +3,9 @@ import java.awt.image.*;
 import java.net.URL;
 import javax.imageio.*;
 
-public class Player extends Generals {
+public class Player {
 	private boolean left, right, up, down, firing, recovering;
-	private BufferedImage imageUp, image;
+	private BufferedImage imageUp, image, imageUpTrans;
 	private Color color1, color2;
 	private int requiredPower[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	private int x, y, r, dx, dy, speed, lives, score, powerLevel, power;
@@ -33,7 +33,9 @@ public class Player extends Generals {
 
 		score = 0;
 
-		if (imageUp == null) imageUp = loadImg ("/img/hero/hero-up.png");
+		if (imageUp == null) imageUp = new Generals().loadImg("/img/hero/hero-up.png");
+
+		if (imageUpTrans == null) imageUpTrans = new Generals().loadImg("/img/hero/hero-up-transp.png");
 		image = imageUp;
 	}
 
@@ -91,7 +93,11 @@ public class Player extends Generals {
 		}
 	}
 	public void draw (Graphics2D g) {
-		image = imageUp;
+		if (recovering) 
+			image = imageUpTrans;
+		else 
+			image = imageUp;
+
 		g.drawImage(image, x - r, y - r, null);
 	}
 
