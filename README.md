@@ -1,10 +1,5 @@
-=============================================
-=											=
-=											=
-=				SpaceWar					=
-=											=
-=											=
-=============================================
+SpaceWar
+========
 
 Game build in Java
 SpaceWar.java contains the main method
